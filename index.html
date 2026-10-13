@@ -222,14 +222,18 @@
         <h3 id="cal-month-title">Ottobre 2026</h3>
         <button type="button" class="amp-btn" id="btn-next-m" style="padding:4px 12px;">▶</button>
       </div>
-      <div class="grid-2x2" style="margin-top:10px;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 10px;">
         <div class="stat-box">
           <div class="stat-lbl">Spesa Mese</div>
-          <div class="stat-val val-green" id="m-cost">€ 0.00</div>
+          <div class="stat-val val-green" id="m-cost" style="font-size: 15px;">€ 0.00</div>
         </div>
         <div class="stat-box">
-          <div class="stat-lbl">Ricariche Totali</div>
-          <div class="stat-val val-blue" id="m-count">0</div>
+          <div class="stat-lbl">Energia Mese</div>
+          <div class="stat-val val-blue" id="m-kwh" style="font-size: 15px;">0.0 kWh</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-lbl">Ricariche</div>
+          <div class="stat-val val-amber" id="m-count" style="font-size: 15px;">0</div>
         </div>
       </div>
     </div>
@@ -363,6 +367,7 @@
     }
 
     let monthCost = 0;
+    let monthKwh = 0;
     let monthCount = 0;
     const monthStr = (m + 1 < 10 ? '0' : '') + (m + 1);
 
@@ -376,6 +381,7 @@
       if (dayCharges.length > 0) {
         monthCost += dayCost;
         monthCount += dayCharges.length;
+        monthKwh += dayCharges.reduce((acc, c) => acc + c.kwh, 0);
       }
 
       const cell = document.createElement('div');
@@ -387,6 +393,7 @@
     }
 
     document.getElementById('m-cost').innerText = '€ ' + monthCost.toFixed(2);
+    document.getElementById('m-kwh').innerText = monthKwh.toFixed(1) + ' kWh';
     document.getElementById('m-count').innerText = monthCount;
 
     const logContainer = document.getElementById('logs-list');
