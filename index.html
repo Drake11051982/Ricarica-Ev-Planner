@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>EV ChargePlanner</title>
+  <!-- Icona Apple Touch per la Schermata Home -->
+  <link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=180&h=180&fit=crop">
   <style>
     :root {
       --bg-color: #0b0f19;
@@ -28,12 +30,12 @@
     .nav-btn.active { background: #1e293b; color: var(--accent-green); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
     /* Cards */
-    .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 16px; }
+    .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 16px; overflow: hidden; }
     .card-title { display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 600; color: #fff; }
 
     /* Forms */
     .form-group { display: flex; flex-direction: column; gap: 8px; }
-    .form-row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
+    .form-row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; gap: 8px; }
     .label-muted { color: var(--text-muted); }
     .val-green { color: var(--accent-green); }
     .val-blue { color: var(--accent-blue); }
@@ -41,8 +43,9 @@
     .val-red { color: var(--accent-red); }
 
     input[type="number"], select, input[type="time"], input[type="text"] {
-      width: 100%; background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 12px; color: #fff; font-size: 16px; outline: none;
+      width: 100%; min-width: 0; background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 12px; color: #fff; font-size: 16px; outline: none; -webkit-appearance: none; box-sizing: border-box;
     }
+    input[type="time"] { text-align: center; }
     input[type="range"] { -webkit-appearance: none; width: 100%; height: 8px; background: #374151; border-radius: 4px; outline: none; }
     input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--accent-green); cursor: pointer; }
 
@@ -136,14 +139,14 @@
         </div>
       </div>
       <div class="form-row">
-        <div style="flex:1; margin-right:8px;">
+        <div style="flex:1; min-width:0;">
           <span class="label-muted" style="font-size:12px;">Tensione</span>
           <select id="volt-select">
             <option value="230">230 V (Domestic)</option>
             <option value="400">400 V (Industrial)</option>
           </select>
         </div>
-        <div style="flex:1;">
+        <div style="flex:1; min-width:0;">
           <span class="label-muted" style="font-size:12px;">Fasi</span>
           <select id="phase-select">
             <option value="1">Monofase (1x)</option>
@@ -163,11 +166,11 @@
     <div class="card">
       <div class="card-title">💶 Prezzo & Programmazione</div>
       <div class="form-row">
-        <div style="flex:1; margin-right:8px;">
+        <div style="flex:1; min-width:0;">
           <span class="label-muted" style="font-size:12px;">Prezzo (€/kWh)</span>
           <input type="text" id="price-input" value="0.31" inputmode="decimal">
         </div>
-        <div style="flex:1;">
+        <div style="flex:1; min-width:0;">
           <span class="label-muted" style="font-size:12px;">Ora Inizio Ricarica</span>
           <input type="time" id="time-start" value="00:00">
         </div>
