@@ -22,7 +22,7 @@
     body { background-color: var(--bg-color); color: var(--text-main); padding: 16px; padding-top: max(16px, env(safe-area-inset-top)); padding-bottom: max(32px, env(safe-area-inset-bottom)); min-height: 100vh; }
     .container { max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
 
-    /* Top Nav Switch */
+    /* Nav Tabs */
     .nav-tabs { display: flex; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 4px; }
     .nav-btn { flex: 1; padding: 10px; border: none; background: transparent; color: var(--text-muted); font-weight: 600; font-size: 14px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
     .nav-btn.active { background: #1e293b; color: var(--accent-green); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
@@ -31,11 +31,10 @@
     .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 16px; }
     .card-title { display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 600; color: #fff; }
 
-    /* Forms & Controls */
+    /* Forms */
     .form-group { display: flex; flex-direction: column; gap: 8px; }
     .form-row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
     .label-muted { color: var(--text-muted); }
-    .val-highlight { font-weight: 600; }
     .val-green { color: var(--accent-green); }
     .val-blue { color: var(--accent-blue); }
     .val-amber { color: var(--accent-amber); }
@@ -48,7 +47,7 @@
 
     /* Amperage Buttons */
     .amp-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
-    .amp-btn { background: var(--input-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 8px 0; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: center; }
+    .amp-btn { background: var(--input-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 10px 0; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: center; }
     .amp-btn.active { background: #374151; border-color: var(--accent-amber); color: var(--accent-amber); }
 
     /* Progress bar */
@@ -56,12 +55,12 @@
     .progress-curr { height: 100%; background: var(--accent-green); }
     .progress-target { height: 100%; background: var(--accent-blue); }
 
-    /* Donut Chart */
+    /* Chart */
     .chart-container { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; margin: 10px 0; }
     .donut-svg { width: 140px; height: 140px; transform: rotate(-90deg); }
     .donut-circle { fill: transparent; stroke-width: 16; }
 
-    /* Main Result Card */
+    /* Result Card */
     .result-hero { text-align: center; background: linear-gradient(180deg, #111827 0%, #1e293b 100%); border: 1px solid var(--accent-green); }
     .big-time { font-size: 38px; font-weight: 800; color: #fff; margin: 4px 0; }
     .grid-2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
@@ -69,7 +68,7 @@
     .stat-lbl { font-size: 12px; color: var(--text-muted); }
     .stat-val { font-size: 18px; font-weight: 700; margin-top: 2px; }
 
-    /* Calendar View */
+    /* Calendar */
     .cal-header { display: flex; justify-content: space-between; align-items: center; }
     .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
     .cal-day-name { font-size: 11px; color: var(--text-muted); font-weight: 600; padding: 4px 0; }
@@ -88,26 +87,25 @@
 <div class="container">
   <!-- Navigazione -->
   <div class="nav-tabs">
-    <button class="nav-btn active" id="tab-calc-btn" onclick="switchTab('calc')">⚡ Calcolatore</button>
-    <button class="nav-btn" id="tab-cal-btn" onclick="switchTab('cal')">📅 Calendario & Costi</button>
+    <button class="nav-btn active" id="tab-calc-btn">⚡ Calcolatore</button>
+    <button class="nav-btn" id="tab-cal-btn">📅 Calendario & Costi</button>
   </div>
 
-  <!-- SEZIONE CALCOLATORE -->
+  <!-- CALCOLATORE -->
   <div id="section-calc" class="calc-wrapper">
-    <!-- Batteria -->
     <div class="card">
       <div class="card-title">🔋 Batteria Veicolo</div>
       <div class="form-group">
         <div class="form-row"><span class="label-muted">Capacità Batteria (kWh)</span></div>
-        <input type="number" id="cap-input" value="18.4" step="0.1" oninput="calculate()">
+        <input type="text" id="cap-input" value="18.4" inputmode="decimal">
       </div>
       <div class="form-group">
         <div class="form-row">
           <span class="label-muted">Carica Attuale: <b class="val-green" id="soc-curr-txt">52%</b></span>
           <span class="label-muted">Carica Desiderata: <b class="val-blue" id="soc-target-txt">80%</b></span>
         </div>
-        <input type="range" id="soc-curr" min="0" max="100" value="52" oninput="calculate()">
-        <input type="range" id="soc-target" min="0" max="100" value="80" oninput="calculate()">
+        <input type="range" id="soc-curr" min="0" max="100" value="52">
+        <input type="range" id="soc-target" min="0" max="100" value="80">
         <div class="progress-bar-bg">
           <div class="progress-curr" id="p-curr"></div>
           <div class="progress-target" id="p-target"></div>
@@ -119,7 +117,6 @@
       </div>
     </div>
 
-    <!-- Parametri Carica -->
     <div class="card">
       <div class="card-title">⚡ Parametri di Carica</div>
       <div class="form-group">
@@ -128,25 +125,25 @@
           <span class="val-amber" id="amp-txt">8 A</span>
         </div>
         <div class="amp-grid">
-          <div class="amp-btn" onclick="setAmp(6)">6A</div>
-          <div class="amp-btn active" id="amp-8" onclick="setAmp(8)">8A</div>
-          <div class="amp-btn" onclick="setAmp(10)">10A</div>
-          <div class="amp-btn" onclick="setAmp(13)">13A</div>
-          <div class="amp-btn" onclick="setAmp(16)">16A</div>
-          <div class="amp-btn" onclick="setAmp(32)">32A</div>
+          <button type="button" class="amp-btn" data-amp="6">6A</button>
+          <button type="button" class="amp-btn active" id="amp-8" data-amp="8">8A</button>
+          <button type="button" class="amp-btn" data-amp="10">10A</button>
+          <button type="button" class="amp-btn" data-amp="13">13A</button>
+          <button type="button" class="amp-btn" data-amp="16">16A</button>
+          <button type="button" class="amp-btn" data-amp="32">32A</button>
         </div>
       </div>
       <div class="form-row">
         <div style="flex:1; margin-right:8px;">
           <span class="label-muted" style="font-size:12px;">Tensione</span>
-          <select id="volt-select" onchange="calculate()">
+          <select id="volt-select">
             <option value="230">230 V (Domestic)</option>
             <option value="400">400 V (Industrial)</option>
           </select>
         </div>
         <div style="flex:1;">
           <span class="label-muted" style="font-size:12px;">Fasi</span>
-          <select id="phase-select" onchange="calculate()">
+          <select id="phase-select">
             <option value="1">Monofase (1x)</option>
             <option value="3">Trifase (3x)</option>
           </select>
@@ -157,26 +154,24 @@
           <span class="label-muted">Dispersione AC/DC (%)</span>
           <span style="color:var(--accent-red)" id="loss-txt">17% perdita</span>
         </div>
-        <input type="range" id="loss-input" min="0" max="30" value="17" oninput="calculate()">
+        <input type="range" id="loss-input" min="0" max="30" value="17">
       </div>
     </div>
 
-    <!-- Costi -->
     <div class="card">
       <div class="card-title">💶 Prezzo & Programmazione</div>
       <div class="form-row">
         <div style="flex:1; margin-right:8px;">
           <span class="label-muted" style="font-size:12px;">Prezzo (€/kWh)</span>
-          <input type="number" id="price-input" value="0.31" step="0.01" oninput="calculate()">
+          <input type="text" id="price-input" value="0.31" inputmode="decimal">
         </div>
         <div style="flex:1;">
           <span class="label-muted" style="font-size:12px;">Ora Inizio Ricarica</span>
-          <input type="time" id="time-start" value="00:00" onchange="calculate()">
+          <input type="time" id="time-start" value="00:00">
         </div>
       </div>
     </div>
 
-    <!-- Risultati -->
     <div class="card result-hero">
       <span class="label-muted" style="font-size:12px; letter-spacing: 1px;">TEMPO STIMATO DI RICARICA</span>
       <div class="big-time" id="res-time">3h 22m</div>
@@ -200,7 +195,6 @@
       </div>
     </div>
 
-    <!-- Chart -->
     <div class="card">
       <div class="card-title">📊 Ripartizione Energia</div>
       <div class="chart-container">
@@ -214,18 +208,17 @@
         <span style="color:var(--accent-green)">● Utile (<b id="lbl-u-kwh">5.2 kWh</b>)</span>
         <span style="color:var(--accent-red)">● Dispersione (<b id="lbl-l-kwh">1.1 kWh</b>)</span>
       </div>
-      <button class="btn-action" style="margin-top:10px;" onclick="saveChargeToCalendar()">➕ Salvataggio Rapido Oggi</button>
+      <button type="button" class="btn-action" id="btn-save-today" style="margin-top:10px;">➕ Salvataggio Rapido Oggi</button>
     </div>
   </div>
 
-  <!-- SEZIONE CALENDARIO -->
+  <!-- CALENDARIO -->
   <div id="section-cal" class="calc-wrapper hidden">
-    <!-- Totali Mese -->
     <div class="card">
       <div class="cal-header">
-        <button class="amp-btn" style="padding:4px 12px;" onclick="changeMonth(-1)">◀</button>
+        <button type="button" class="amp-btn" id="btn-prev-m" style="padding:4px 12px;">◀</button>
         <h3 id="cal-month-title">Ottobre 2026</h3>
-        <button class="amp-btn" style="padding:4px 12px;" onclick="changeMonth(1)">▶</button>
+        <button type="button" class="amp-btn" id="btn-next-m" style="padding:4px 12px;">▶</button>
       </div>
       <div class="grid-2x2" style="margin-top:10px;">
         <div class="stat-box">
@@ -239,7 +232,6 @@
       </div>
     </div>
 
-    <!-- Griglia Calendario -->
     <div class="card">
       <div class="cal-grid">
         <div class="cal-day-name">L</div><div class="cal-day-name">M</div><div class="cal-day-name">M</div>
@@ -262,6 +254,71 @@
   let viewDate = new Date();
   let chargesData = JSON.parse(localStorage.getItem('ev_charges') || '[]');
 
+  function parseNum(val) {
+    if (!val) return 0;
+    return parseFloat(String(val).replace(',', '.')) || 0;
+  }
+
+  function calculate() {
+    const cap = parseNum(document.getElementById('cap-input').value);
+    const socC = parseNum(document.getElementById('soc-curr').value);
+    const socT = parseNum(document.getElementById('soc-target').value);
+    const lossPct = parseNum(document.getElementById('loss-input').value);
+    const volt = parseNum(document.getElementById('volt-select').value) || 230;
+    const phase = parseNum(document.getElementById('phase-select').value) || 1;
+    const price = parseNum(document.getElementById('price-input').value);
+
+    document.getElementById('soc-curr-txt').innerText = socC + '%';
+    document.getElementById('soc-target-txt').innerText = socT + '%';
+    document.getElementById('p-curr').style.width = Math.min(100, Math.max(0, socC)) + '%';
+    document.getElementById('p-target').style.width = Math.min(100, Math.max(0, socT - socC)) + '%';
+    document.getElementById('loss-txt').innerText = lossPct + '% perdita';
+
+    const kwhCurr = (cap * socC) / 100;
+    const kwhNeed = Math.max(0, (cap * (socT - socC)) / 100);
+    document.getElementById('kwh-curr-txt').innerText = kwhCurr.toFixed(2) + ' kWh';
+    document.getElementById('kwh-need-txt').innerText = kwhNeed.toFixed(2) + ' kWh';
+
+    const powerKW = (currentAmp * volt * phase) / 1000;
+    document.getElementById('res-power').innerText = powerKW.toFixed(2) + ' kW';
+
+    const gridkWh = lossPct < 100 ? kwhNeed / (1 - lossPct / 100) : kwhNeed;
+    const losskWh = gridkWh - kwhNeed;
+    document.getElementById('res-grid-energy').innerText = gridkWh.toFixed(2) + ' kWh';
+
+    const usefulPct = Math.round(100 - lossPct);
+    document.getElementById('donut-useful').setAttribute('stroke-dasharray', usefulPct + ' ' + (100 - usefulPct));
+    document.getElementById('donut-loss').setAttribute('stroke-dasharray', lossPct + ' ' + (100 - lossPct));
+    document.getElementById('donut-loss').setAttribute('stroke-dashoffset', '-' + usefulPct);
+    document.getElementById('lbl-u-kwh').innerText = kwhNeed.toFixed(1) + ' kWh';
+    document.getElementById('lbl-l-kwh').innerText = losskWh.toFixed(1) + ' kWh';
+
+    const hoursDecimal = powerKW > 0 ? gridkWh / powerKW : 0;
+    const h = Math.floor(hoursDecimal);
+    const m = Math.round((hoursDecimal - h) * 60);
+    document.getElementById('res-time').innerText = h + 'h ' + m + 'm';
+
+    const startTimeStr = document.getElementById('time-start').value || "00:00";
+    const parts = startTimeStr.split(':');
+    const startH = parseInt(parts[0], 10) || 0;
+    const startM = parseInt(parts[1], 10) || 0;
+    let endH = (startH + h + Math.floor((startM + m) / 60)) % 24;
+    let endM = (startM + m) % 60;
+    document.getElementById('res-end-time').innerText = (endH < 10 ? '0' : '') + endH + ':' + (endM < 10 ? '0' : '') + endM;
+
+    const totalCost = gridkWh * price;
+    document.getElementById('res-cost').innerText = '€ ' + totalCost.toFixed(2);
+  }
+
+  function setAmp(amp) {
+    currentAmp = amp;
+    document.querySelectorAll('.amp-btn').forEach(b => b.classList.remove('active'));
+    const activeBtn = document.querySelector('.amp-btn[data-amp="' + amp + '"]');
+    if (activeBtn) activeBtn.classList.add('active');
+    document.getElementById('amp-txt').innerText = amp + ' A';
+    calculate();
+  }
+
   function switchTab(tab) {
     document.getElementById('section-calc').classList.toggle('hidden', tab !== 'calc');
     document.getElementById('section-cal').classList.toggle('hidden', tab !== 'cal');
@@ -270,72 +327,9 @@
     if (tab === 'cal') renderCalendar();
   }
 
-  function setAmp(amp) {
-    currentAmp = amp;
-    document.querySelectorAll('.amp-btn').forEach(b => b.classList.remove('active'));
-    if (document.getElementById('amp-' + amp)) document.getElementById('amp-' + amp).classList.add('active');
-    document.getElementById('amp-txt').innerText = amp + ' A';
-    calculate();
-  }
-
-  function calculate() {
-    const cap = parseFloat(document.getElementById('cap-input').value) || 0;
-    const socC = parseFloat(document.getElementById('soc-curr').value) || 0;
-    const socT = parseFloat(document.getElementById('soc-target').value) || 0;
-    const lossPct = parseFloat(document.getElementById('loss-input').value) || 0;
-    const volt = parseFloat(document.getElementById('volt-select').value) || 230;
-    const phase = parseFloat(document.getElementById('phase-select').value) || 1;
-    const price = parseFloat(document.getElementById('price-input').value) || 0;
-
-    document.getElementById('soc-curr-txt').innerText = socC + '%';
-    document.getElementById('soc-target-txt').innerText = socT + '%';
-    document.getElementById('p-curr').style.width = socC + '%';
-    document.getElementById('p-target').style.width = Math.max(0, socT - socC) + '%';
-    document.getElementById('loss-txt').innerText = lossPct + '% perdita';
-
-    const kwhCurr = (cap * socC) / 100;
-    const kwhNeed = Math.max(0, (cap * (socT - socC)) / 100);
-    document.getElementById('kwh-curr-txt').innerText = kwhCurr.toFixed(2) + ' kWh';
-    document.getElementById('kwh-need-txt').innerText = kwhNeed.toFixed(2) + ' kWh';
-
-    // Power kW
-    const powerKW = (currentAmp * volt * phase) / 1000;
-    document.getElementById('res-power').innerText = powerKW.toFixed(2) + ' kW';
-
-    // Grid Energy & Loss
-    const gridkWh = kwhNeed / (1 - lossPct / 100);
-    const losskWh = gridkWh - kwhNeed;
-    document.getElementById('res-grid-energy').innerText = gridkWh.toFixed(2) + ' kWh';
-
-    // Donut
-    const usefulPct = Math.round(100 - lossPct);
-    document.getElementById('donut-useful').setAttribute('stroke-dasharray', `${usefulPct}${100-usefulPct}`);
-    document.getElementById('donut-loss').setAttribute('stroke-dasharray', `${lossPct}${100-lossPct}`);
-    document.getElementById('donut-loss').setAttribute('stroke-dashoffset`, `-${usefulPct}`);
-    document.getElementById('lbl-u-kwh').innerText = kwhNeed.toFixed(1) + ' kWh';
-    document.getElementById('lbl-l-kwh').innerText = losskWh.toFixed(1) + ' kWh';
-
-    // Time
-    const hoursDecimal = powerKW > 0 ? gridkWh / powerKW : 0;
-    const h = Math.floor(hoursDecimal);
-    const m = Math.round((hoursDecimal - h) * 60);
-    document.getElementById('res-time').innerText = `${h}h ${m}m`;
-
-    // Completion Time
-    const startTimeStr = document.getElementById('time-start').value || "00:00";
-    const [startH, startM] = startTimeStr.split(':').map(Number);
-    let endH = (startH + h + Math.floor((startM + m) / 60)) % 24;
-    let endM = (startM + m) % 60;
-    document.getElementById('res-end-time').innerText = `${String(endH).padStart(2,'0')}:${String(endM).padStart(2,'0')}`;
-
-    // Cost
-    const totalCost = gridkWh * price;
-    document.getElementById('res-cost').innerText = '€ ' + totalCost.toFixed(2);
-  }
-
   function saveChargeToCalendar() {
-    const cost = parseFloat(document.getElementById('res-cost').innerText.replace('€ ', '')) || 0;
-    const kwh = parseFloat(document.getElementById('res-grid-energy').innerText.replace(' kWh', '')) || 0;
+    const cost = parseNum(document.getElementById('res-cost').innerText.replace('€ ', ''));
+    const kwh = parseNum(document.getElementById('res-grid-energy').innerText.replace(' kWh', ''));
     const today = new Date().toISOString().split('T')[0];
 
     chargesData.push({ id: Date.now(), date: today, cost: cost, kwh: kwh });
@@ -343,16 +337,11 @@
     alert('Ricarica salvata per la data di oggi!');
   }
 
-  function changeMonth(dir) {
-    viewDate.setMonth(viewDate.getMonth() + dir);
-    renderCalendar();
-  }
-
   function renderCalendar() {
     const y = viewDate.getFullYear();
     const m = viewDate.getMonth();
     const monthNames = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
-    document.getElementById('cal-month-title').innerText = `${monthNames[m]} ${y}`;
+    document.getElementById('cal-month-title').innerText = monthNames[m] + ' ' + y;
 
     const container = document.getElementById('cal-days-container');
     container.innerHTML = '';
@@ -367,11 +356,11 @@
 
     let monthCost = 0;
     let monthCount = 0;
-    const monthStr = String(m + 1).padStart(2, '0');
+    const monthStr = (m + 1 < 10 ? '0' : '') + (m + 1);
 
     for(let d=1; d<=totalDays; d++) {
-      const dayStr = String(d).padStart(2, '0');
-      const dateKey = `${y}-${monthStr}-${dayStr}`;
+      const dayStr = (d < 10 ? '0' : '') + d;
+      const dateKey = y + '-' + monthStr + '-' + dayStr;
       
       const dayCharges = chargesData.filter(c => c.date === dateKey);
       const dayCost = dayCharges.reduce((acc, c) => acc + c.cost, 0);
@@ -385,10 +374,7 @@
       cell.className = 'cal-cell' + (dayCharges.length > 0 ? ' has-data' : '');
       if (dateKey === new Date().toISOString().split('T')[0]) cell.classList.add('today');
 
-      cell.innerHTML = `
-        <div class="cal-num">${d}</div>
-        ${dayCost > 0 ? `<div class="cal-badge">€${dayCost.toFixed(1)}</div>` : ''}
-      `;
+      cell.innerHTML = '<div class="cal-num">' + d + '</div>' + (dayCost > 0 ? '<div class="cal-badge">€' + dayCost.toFixed(1) + '</div>' : '');
       container.appendChild(cell);
     }
 
@@ -396,7 +382,7 @@
     document.getElementById('m-count').innerText = monthCount;
 
     const logContainer = document.getElementById('logs-list');
-    const monthLogs = chargesData.filter(c => c.date.startsWith(`${y}-${monthStr}`));
+    const monthLogs = chargesData.filter(c => c.date.startsWith(y + '-' + monthStr));
     if (monthLogs.length === 0) {
       logContainer.innerHTML = '<div class="label-muted" style="text-align:center; font-size:13px;">Nessuna ricarica registrata questo mese.</div>';
     } else {
@@ -409,7 +395,39 @@
     }
   }
 
-  calculate();
+  // Event Listeners iOS Compatible
+  document.addEventListener("DOMContentLoaded", function() {
+    const inputs = ['cap-input', 'soc-curr', 'soc-target', 'loss-input', 'volt-select', 'phase-select', 'price-input', 'time-start'];
+    inputs.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', calculate);
+        el.addEventListener('change', calculate);
+      }
+    });
+
+    document.querySelectorAll('.amp-btn[data-amp]').forEach(btn => {
+      btn.addEventListener('click', function() {
+        setAmp(parseInt(this.getAttribute('data-amp'), 10));
+      });
+    });
+
+    document.getElementById('tab-calc-btn').addEventListener('click', () => switchTab('calc'));
+    document.getElementById('tab-cal-btn').addEventListener('click', () => switchTab('cal'));
+    document.getElementById('btn-save-today').addEventListener('click', saveChargeToCalendar);
+
+    document.getElementById('btn-prev-m').addEventListener('click', () => {
+      viewDate.setMonth(viewDate.getMonth() - 1);
+      renderCalendar();
+    });
+    document.getElementById('btn-next-m').addEventListener('click', () => {
+      viewDate.setMonth(viewDate.getMonth() + 1);
+      renderCalendar();
+    });
+
+    calculate();
+  });
 </script>
 </body>
 </html>
+
