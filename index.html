@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>EV ChargePlanner</title>
   <!-- Icona Apple Touch per la Schermata Home (Colonnina di Ricarica) -->
-  <link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=180&h=180&fit=crop">
+  <link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=180&h=180&fit=crop">
   <style>
     :root {
       --bg-color: #0b0f19;
@@ -384,67 +384,4 @@
       if (dayCharges.length > 0) {
         monthCost += dayCost;
         monthCount += dayCharges.length;
-        monthKwh += dayCharges.reduce((acc, c) => acc + c.kwh, 0);
-      }
-
-      const cell = document.createElement('div');
-      cell.className = 'cal-cell' + (dayCharges.length > 0 ? ' has-data' : '');
-      if (dateKey === new Date().toISOString().split('T')[0]) cell.classList.add('today');
-
-      cell.innerHTML = '<div class="cal-num">' + d + '</div>' + (dayCost > 0 ? '<div class="cal-badge">€' + dayCost.toFixed(1) + '</div>' : '');
-      container.appendChild(cell);
-    }
-
-    document.getElementById('m-cost').innerText = '€ ' + monthCost.toFixed(2);
-    document.getElementById('m-kwh').innerText = monthKwh.toFixed(1) + ' kWh';
-    document.getElementById('m-count').innerText = monthCount;
-
-    const logContainer = document.getElementById('logs-list');
-    const monthLogs = chargesData.filter(c => c.date.startsWith(y + '-' + monthStr));
-    if (monthLogs.length === 0) {
-      logContainer.innerHTML = '<div class="label-muted" style="text-align:center; font-size:13px;">Nessuna ricarica registrata questo mese.</div>';
-    } else {
-      logContainer.innerHTML = monthLogs.map(c => `
-        <div class="form-row" style="background:#1f2937; padding:10px; border-radius:8px;">
-          <div><b>${c.date}</b> - ${c.kwh.toFixed(1)} kWh <span class="val-green">€ ${c.cost.toFixed(2)}</span></div>
-          <button type="button" class="btn-delete" onclick="deleteCharge(${c.id})">Elimina</button>
-        </div>
-      `).join('');
-    }
-  }
-
-  // Event Listeners iOS Compatible
-  document.addEventListener("DOMContentLoaded", function() {
-    const inputs = ['cap-input', 'soc-curr', 'soc-target', 'loss-input', 'volt-select', 'phase-select', 'price-input', 'time-start'];
-    inputs.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.addEventListener('input', calculate);
-        el.addEventListener('change', calculate);
-      }
-    });
-
-    document.querySelectorAll('.amp-btn[data-amp]').forEach(btn => {
-      btn.addEventListener('click', function() {
-        setAmp(parseInt(this.getAttribute('data-amp'), 10));
-      });
-    });
-
-    document.getElementById('tab-calc-btn').addEventListener('click', () => switchTab('calc'));
-    document.getElementById('tab-cal-btn').addEventListener('click', () => switchTab('cal'));
-    document.getElementById('btn-save-today').addEventListener('click', saveChargeToCalendar);
-
-    document.getElementById('btn-prev-m').addEventListener('click', () => {
-      viewDate.setMonth(viewDate.getMonth() - 1);
-      renderCalendar();
-    });
-    document.getElementById('btn-next-m').addEventListener('click', () => {
-      viewDate.setMonth(viewDate.getMonth() + 1);
-      renderCalendar();
-    });
-
-    calculate();
-  });
-</script>
-</body>
-</html>
+        month
