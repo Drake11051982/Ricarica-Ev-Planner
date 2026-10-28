@@ -117,12 +117,12 @@
       <div class="form-group">
         <div class="form-row">
           <span class="label-muted">Amperaggio (A)</span>
-          <span class="val-amber" id="amp-txt">8 A</span>
+          <span class="val-amber" id="amp-txt">10 A</span>
         </div>
         <div class="amp-grid">
           <button type="button" class="amp-btn" data-amp="6">6A</button>
-          <button type="button" class="amp-btn active" id="amp-8" data-amp="8">8A</button>
-          <button type="button" class="amp-btn" data-amp="10">10A</button>
+          <button type="button" class="amp-btn" data-amp="8">8A</button>
+          <button type="button" class="amp-btn active" id="amp-10" data-amp="10">10A</button>
           <button type="button" class="amp-btn" data-amp="13">13A</button>
           <button type="button" class="amp-btn" data-amp="16">16A</button>
           <button type="button" class="amp-btn" data-amp="32">32A</button>
@@ -147,9 +147,9 @@
       <div class="form-group">
         <div class="form-row">
           <span class="label-muted">Dispersione AC/DC (%)</span>
-          <span style="color:var(--accent-red)" id="loss-txt">17% perdita</span>
+          <span style="color:var(--accent-red)" id="loss-txt">11% perdita</span>
         </div>
-        <input type="range" id="loss-input" min="0" max="30" value="17">
+        <input type="range" id="loss-input" min="0" max="30" value="11">
       </div>
     </div>
 
@@ -158,7 +158,7 @@
       <div class="form-row">
         <div style="flex:1; min-width:0;">
           <span class="label-muted" style="font-size:12px;">Prezzo (€/kWh)</span>
-          <input type="text" id="price-input" value="0.31" inputmode="decimal">
+          <input type="text" id="price-input" value="0.27" inputmode="decimal">
         </div>
         <div style="flex:1; min-width:0;">
           <span class="label-muted" style="font-size:12px;">Ora Inizio Ricarica</span>
@@ -175,23 +175,23 @@
 
     <div class="card result-hero">
       <span class="label-muted" style="font-size:12px; letter-spacing: 1px;">TEMPO STIMATO DI RICARICA</span>
-      <div class="big-time" id="res-time">3h 22m</div>
+      <div class="big-time" id="res-time">2h 45m</div>
       <div class="grid-2x2">
         <div class="stat-box">
           <div class="stat-lbl">Potenza Erogata</div>
-          <div class="stat-val val-green" id="res-power">1.84 kW</div>
+          <div class="stat-val val-green" id="res-power">2.30 kW</div>
         </div>
         <div class="stat-box">
           <div class="stat-lbl">Energia dalla Rete</div>
-          <div class="stat-val val-blue" id="res-grid-energy">6.21 kWh</div>
+          <div class="stat-val val-blue" id="res-grid-energy">5.79 kWh</div>
         </div>
         <div class="stat-box">
           <div class="stat-lbl">Ora Completamento</div>
-          <div class="stat-val val-amber" id="res-end-time">03:22</div>
+          <div class="stat-val val-amber" id="res-end-time">02:45</div>
         </div>
         <div class="stat-box">
           <div class="stat-lbl">Costo Totale</div>
-          <div class="stat-val val-green" id="res-cost">€ 1.92</div>
+          <div class="stat-val val-green" id="res-cost">€ 1.56</div>
         </div>
       </div>
     </div>
@@ -201,13 +201,13 @@
       <div class="chart-container">
         <svg class="donut-svg" viewBox="0 0 42 42">
           <circle class="donut-circle" cx="21" cy="21" r="15.915" stroke="#1f2937"></circle>
-          <circle class="donut-circle" id="donut-useful" cx="21" cy="21" r="15.915" stroke="#10b981" stroke-dasharray="83 17" stroke-dashoffset="0"></circle>
-          <circle class="donut-circle" id="donut-loss" cx="21" cy="21" r="15.915" stroke="#ef4444" stroke-dasharray="17 83" stroke-dashoffset="-83"></circle>
+          <circle class="donut-circle" id="donut-useful" cx="21" cy="21" r="15.915" stroke="#10b981" stroke-dasharray="89 11" stroke-dashoffset="0"></circle>
+          <circle class="donut-circle" id="donut-loss" cx="21" cy="21" r="15.915" stroke="#ef4444" stroke-dasharray="11 89" stroke-dashoffset="-89"></circle>
         </svg>
       </div>
       <div class="form-row" style="justify-content:space-around; font-size:13px;">
         <span style="color:var(--accent-green)">● Utile (<b id="lbl-u-kwh">5.2 kWh</b>)</span>
-        <span style="color:var(--accent-red)">● Dispersione (<b id="lbl-l-kwh">1.1 kWh</b>)</span>
+        <span style="color:var(--accent-red)">● Dispersione (<b id="lbl-l-kwh">0.6 kWh</b>)</span>
       </div>
       <button type="button" class="btn-action" id="btn-save-today" style="margin-top:10px;">➕ Salvataggio Rapido Oggi</button>
     </div>
@@ -258,7 +258,7 @@
 </div>
 
 <script>
-  let currentAmp = 8;
+  let currentAmp = 10;
   let viewDate = new Date();
   let chargesData = JSON.parse(localStorage.getItem('ev_charges') || '[]');
 
@@ -464,4 +464,3 @@
 </script>
 </body>
 </html>
-
