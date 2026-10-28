@@ -83,4 +83,368 @@
     .cal-badge { font-size: 9px; background: var(--accent-green); color: #000; font-weight: 700; border-radius: 4px; padding: 1px 2px; }
 
     .btn-action { width: 100%; background: var(--accent-green); color: #000; font-weight: 700; border: none; padding: 14px; border-radius: 10px; font-size: 15px; cursor: pointer; }
-    .btn-delete { background: transparent; border: none; color: var(--accent-red); font-weight: 700; cursor: pointer; font-
+    .btn-delete { background: transparent; border: none; color: var(--accent-red); font-weight: 700; cursor: pointer; font-size: 14px; padding: 4px 8px; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Navigazione -->
+  <div class="nav-tabs">
+    <button type="button" class="nav-btn active" id="tab-calc-btn">⚡ Calcolatore</button>
+    <button type="button" class="nav-btn" id="tab-cal-btn">📅 Calendario & Costi</button>
+  </div>
+
+  <!-- CALCOLATORE -->
+  <div id="section-calc" class="calc-wrapper">
+    <div class="card">
+      <div class="card-title">🔋 Batteria Veicolo</div>
+      <div class="form-group">
+        <div class="form-row"><span class="label-muted">Capacità Batteria (kWh)</span></div>
+        <input type="text" id="cap-input" value="18.4" inputmode="decimal">
+      </div>
+      <div class="form-group">
+        <div class="form-row">
+          <span class="label-muted">Carica Attuale: <b class="val-green" id="soc-curr-txt">52%</b></span>
+          <span class="label-muted">Carica Desiderata: <b class="val-blue" id="soc-target-txt">80%</b></span>
+        </div>
+        <input type="range" id="soc-curr" min="0" max="100" value="52">
+        <input type="range" id="soc-target" min="0" max="100" value="80">
+        <div class="progress-bar-bg">
+          <div class="progress-curr" id="p-curr"></div>
+          <div class="progress-target" id="p-target"></div>
+        </div>
+        <div class="form-row" style="font-size:12px; margin-top:4px;">
+          <span>Attuale: <b id="kwh-curr-txt">9.57 kWh</b></span>
+          <span>Mancante: <b id="kwh-need-txt">5.15 kWh</b></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚡ Parametri di Carica</div>
+      <div class="form-group">
+        <div class="form-row">
+          <span class="label-muted">Amperaggio (A)</span>
+          <span class="val-amber" id="amp-txt">8 A</span>
+        </div>
+        <div class="amp-grid">
+          <button type="button" class="amp-btn" data-amp="6">6A</button>
+          <button type="button" class="amp-btn active" id="amp-8" data-amp="8">8A</button>
+          <button type="button" class="amp-btn" data-amp="10">10A</button>
+          <button type="button" class="amp-btn" data-amp="13">13A</button>
+          <button type="button" class="amp-btn" data-amp="16">16A</button>
+          <button type="button" class="amp-btn" data-amp="32">32A</button>
+        </div>
+      </div>
+      <div class="form-row">
+        <div style="flex:1; min-width:0;">
+          <span class="label-muted" style="font-size:12px;">Tensione</span>
+          <select id="volt-select">
+            <option value="230">230 V (Domestic)</option>
+            <option value="400">400 V (Industrial)</option>
+          </select>
+        </div>
+        <div style="flex:1; min-width:0;">
+          <span class="label-muted" style="font-size:12px;">Fasi</span>
+          <select id="phase-select">
+            <option value="1">Monofase (1x)</option>
+            <option value="3">Trifase (3x)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="form-row">
+          <span class="label-muted">Dispersione AC/DC (%)</span>
+          <span style="color:var(--accent-red)" id="loss-txt">17% perdita</span>
+        </div>
+        <input type="range" id="loss-input" min="0" max="30" value="17">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💶 Prezzo & Programmazione</div>
+      <div class="form-row">
+        <div style="flex:1; min-width:0;">
+          <span class="label-muted" style="font-size:12px;">Prezzo (€/kWh)</span>
+          <input type="text" id="price-input" value="0.31" inputmode="decimal">
+        </div>
+        <div style="flex:1; min-width:0;">
+          <span class="label-muted" style="font-size:12px;">Ora Inizio Ricarica</span>
+          <input type="time" id="time-start" value="00:00">
+        </div>
+      </div>
+    </div>
+
+    <div class="card result-hero">
+      <span class="label-muted" style="font-size:12px; letter-spacing: 1px;">TEMPO STIMATO DI RICARICA</span>
+      <div class="big-time" id="res-time">3h 22m</div>
+      <div class="grid-2x2">
+        <div class="stat-box">
+          <div class="stat-lbl">Potenza Erogata</div>
+          <div class="stat-val val-green" id="res-power">1.84 kW</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-lbl">Energia dalla Rete</div>
+          <div class="stat-val val-blue" id="res-grid-energy">6.21 kWh</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-lbl">Ora Completamento</div>
+          <div class="stat-val val-amber" id="res-end-time">03:22</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-lbl">Costo Totale</div>
+          <div class="stat-val val-green" id="res-cost">€ 1.92</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📊 Ripartizione Energia</div>
+      <div class="chart-container">
+        <svg class="donut-svg" viewBox="0 0 42 42">
+          <circle class="donut-circle" cx="21" cy="21" r="15.915" stroke="#1f2937"></circle>
+          <circle class="donut-circle" id="donut-useful" cx="21" cy="21" r="15.915" stroke="#10b981" stroke-dasharray="83 17" stroke-dashoffset="0"></circle>
+          <circle class="donut-circle" id="donut-loss" cx="21" cy="21" r="15.915" stroke="#ef4444" stroke-dasharray="17 83" stroke-dashoffset="-83"></circle>
+        </svg>
+      </div>
+      <div class="form-row" style="justify-content:space-around; font-size:13px;">
+        <span style="color:var(--accent-green)">● Utile (<b id="lbl-u-kwh">5.2 kWh</b>)</span>
+        <span style="color:var(--accent-red)">● Dispersione (<b id="lbl-l-kwh">1.1 kWh</b>)</span>
+      </div>
+      <button type="button" class="btn-action" id="btn-save-today" style="margin-top:10px;">➕ Salvataggio Rapido Oggi</button>
+    </div>
+  </div>
+
+  <!-- CALENDARIO -->
+  <div id="section-cal" class="calc-wrapper hidden">
+    <div class="card">
+      <div class="cal-header">
+        <button type="button" class="amp-btn" id="btn-prev-m" style="padding:4px 12px;">◀</button>
+        <h3 id="cal-month-title">Ottobre 2026</h3>
+        <button type="button" class="amp-btn" id="btn-next-m" style="padding:4px 12px;">▶</button>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 10px;">
+        <div class="stat-box">
+          <div class="stat-lbl">Spesa Mese</div>
+          <div class="stat-val val-green" id="m-cost" style="font-size: 15px;">€ 0.00</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-lbl">Energia Mese</div>
+          <div class="stat-val val-blue" id="m-kwh" style="font-size: 15px;">0.0 kWh</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-lbl">Ricariche</div>
+          <div class="stat-val val-amber" id="m-count" style="font-size: 15px;">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="cal-grid">
+        <div class="cal-day-name">L</div><div class="cal-day-name">M</div><div class="cal-day-name">M</div>
+        <div class="cal-day-name">G</div><div class="cal-day-name">V</div><div class="cal-day-name">S</div><div class="cal-day-name">D</div>
+      </div>
+      <div class="cal-grid" id="cal-days-container"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📋 Storico Ricariche Mese</div>
+      <div id="logs-list" style="display:flex; flex-direction:column; gap:8px;">
+        <div class="label-muted" style="text-align:center; font-size:13px;">Nessuna ricarica registrata questo mese.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentAmp = 8;
+  let viewDate = new Date();
+  let chargesData = JSON.parse(localStorage.getItem('ev_charges') || '[]');
+
+  function parseNum(val) {
+    if (!val) return 0;
+    return parseFloat(String(val).replace(',', '.')) || 0;
+  }
+
+  function calculate() {
+    const cap = parseNum(document.getElementById('cap-input').value);
+    const socC = parseNum(document.getElementById('soc-curr').value);
+    const socT = parseNum(document.getElementById('soc-target').value);
+    const lossPct = parseNum(document.getElementById('loss-input').value);
+    const volt = parseNum(document.getElementById('volt-select').value) || 230;
+    const phase = parseNum(document.getElementById('phase-select').value) || 1;
+    const price = parseNum(document.getElementById('price-input').value);
+
+    document.getElementById('soc-curr-txt').innerText = socC + '%';
+    document.getElementById('soc-target-txt').innerText = socT + '%';
+    document.getElementById('p-curr').style.width = Math.min(100, Math.max(0, socC)) + '%';
+    document.getElementById('p-target').style.width = Math.min(100, Math.max(0, socT - socC)) + '%';
+    document.getElementById('loss-txt').innerText = lossPct + '% perdita';
+
+    const kwhCurr = (cap * socC) / 100;
+    const kwhNeed = Math.max(0, (cap * (socT - socC)) / 100);
+    document.getElementById('kwh-curr-txt').innerText = kwhCurr.toFixed(2) + ' kWh';
+    document.getElementById('kwh-need-txt').innerText = kwhNeed.toFixed(2) + ' kWh';
+
+    const powerKW = (currentAmp * volt * phase) / 1000;
+    document.getElementById('res-power').innerText = powerKW.toFixed(2) + ' kW';
+
+    const gridkWh = lossPct < 100 ? kwhNeed / (1 - lossPct / 100) : kwhNeed;
+    const losskWh = gridkWh - kwhNeed;
+    document.getElementById('res-grid-energy').innerText = gridkWh.toFixed(2) + ' kWh';
+
+    const usefulPct = Math.round(100 - lossPct);
+    document.getElementById('donut-useful').setAttribute('stroke-dasharray', usefulPct + ' ' + (100 - usefulPct));
+    document.getElementById('donut-loss').setAttribute('stroke-dasharray', lossPct + ' ' + (100 - lossPct));
+    document.getElementById('donut-loss').setAttribute('stroke-dashoffset', '-' + usefulPct);
+    document.getElementById('lbl-u-kwh').innerText = kwhNeed.toFixed(1) + ' kWh';
+    document.getElementById('lbl-l-kwh').innerText = losskWh.toFixed(1) + ' kWh';
+
+    const hoursDecimal = powerKW > 0 ? gridkWh / powerKW : 0;
+    const h = Math.floor(hoursDecimal);
+    const m = Math.round((hoursDecimal - h) * 60);
+    document.getElementById('res-time').innerText = h + 'h ' + m + 'm';
+
+    const startTimeStr = document.getElementById('time-start').value || "00:00";
+    const parts = startTimeStr.split(':');
+    const startH = parseInt(parts[0], 10) || 0;
+    const startM = parseInt(parts[1], 10) || 0;
+    let endH = (startH + h + Math.floor((startM + m) / 60)) % 24;
+    let endM = (startM + m) % 60;
+    document.getElementById('res-end-time').innerText = (endH < 10 ? '0' : '') + endH + ':' + (endM < 10 ? '0' : '') + endM;
+
+    const totalCost = gridkWh * price;
+    document.getElementById('res-cost').innerText = '€ ' + totalCost.toFixed(2);
+  }
+
+  function setAmp(amp) {
+    currentAmp = amp;
+    document.querySelectorAll('.amp-btn').forEach(b => b.classList.remove('active'));
+    const activeBtn = document.querySelector('.amp-btn[data-amp="' + amp + '"]');
+    if (activeBtn) activeBtn.classList.add('active');
+    document.getElementById('amp-txt').innerText = amp + ' A';
+    calculate();
+  }
+
+  function switchTab(tab) {
+    document.getElementById('section-calc').classList.toggle('hidden', tab !== 'calc');
+    document.getElementById('section-cal').classList.toggle('hidden', tab !== 'cal');
+    document.getElementById('tab-calc-btn').classList.toggle('active', tab === 'calc');
+    document.getElementById('tab-cal-btn').classList.toggle('active', tab === 'cal');
+    if (tab === 'cal') renderCalendar();
+  }
+
+  function saveChargeToCalendar() {
+    const cost = parseNum(document.getElementById('res-cost').innerText.replace('€ ', ''));
+    const kwh = parseNum(document.getElementById('res-grid-energy').innerText.replace(' kWh', ''));
+    const today = new Date().toISOString().split('T')[0];
+
+    chargesData.push({ id: Date.now(), date: today, cost: cost, kwh: kwh });
+    localStorage.setItem('ev_charges', JSON.stringify(chargesData));
+    alert('Ricarica salvata per la data di oggi!');
+  }
+
+  function deleteCharge(id) {
+    chargesData = chargesData.filter(c => c.id !== id);
+    localStorage.setItem('ev_charges', JSON.stringify(chargesData));
+    renderCalendar();
+  }
+
+  function renderCalendar() {
+    const y = viewDate.getFullYear();
+    const m = viewDate.getMonth();
+    const monthNames = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
+    document.getElementById('cal-month-title').innerText = monthNames[m] + ' ' + y;
+
+    const container = document.getElementById('cal-days-container');
+    container.innerHTML = '';
+
+    const firstDay = new Date(y, m, 1).getDay();
+    const offset = (firstDay === 0 ? 6 : firstDay - 1);
+    const totalDays = new Date(y, m + 1, 0).getDate();
+
+    for(let i=0; i<offset; i++) {
+      container.appendChild(document.createElement('div'));
+    }
+
+    let monthCost = 0;
+    let monthKwh = 0;
+    let monthCount = 0;
+    const monthStr = (m + 1 < 10 ? '0' : '') + (m + 1);
+
+    for(let d=1; d<=totalDays; d++) {
+      const dayStr = (d < 10 ? '0' : '') + d;
+      const dateKey = y + '-' + monthStr + '-' + dayStr;
+      
+      const dayCharges = chargesData.filter(c => c.date === dateKey);
+      const dayCost = dayCharges.reduce((acc, c) => acc + c.cost, 0);
+
+      if (dayCharges.length > 0) {
+        monthCost += dayCost;
+        monthCount += dayCharges.length;
+        monthKwh += dayCharges.reduce((acc, c) => acc + c.kwh, 0);
+      }
+
+      const cell = document.createElement('div');
+      cell.className = 'cal-cell' + (dayCharges.length > 0 ? ' has-data' : '');
+      if (dateKey === new Date().toISOString().split('T')[0]) cell.classList.add('today');
+
+      cell.innerHTML = '<div class="cal-num">' + d + '</div>' + (dayCost > 0 ? '<div class="cal-badge">€' + dayCost.toFixed(1) + '</div>' : '');
+      container.appendChild(cell);
+    }
+
+    document.getElementById('m-cost').innerText = '€ ' + monthCost.toFixed(2);
+    document.getElementById('m-kwh').innerText = monthKwh.toFixed(1) + ' kWh';
+    document.getElementById('m-count').innerText = monthCount;
+
+    const logContainer = document.getElementById('logs-list');
+    const monthLogs = chargesData.filter(c => c.date.startsWith(y + '-' + monthStr));
+    if (monthLogs.length === 0) {
+      logContainer.innerHTML = '<div class="label-muted" style="text-align:center; font-size:13px;">Nessuna ricarica registrata questo mese.</div>';
+    } else {
+      logContainer.innerHTML = monthLogs.map(c => `
+        <div class="form-row" style="background:#1f2937; padding:10px; border-radius:8px;">
+          <div><b>${c.date}</b> - ${c.kwh.toFixed(1)} kWh <span class="val-green">€ ${c.cost.toFixed(2)}</span></div>
+          <button type="button" class="btn-delete" onclick="deleteCharge(${c.id})">Elimina</button>
+        </div>
+      `).join('');
+    }
+  }
+
+  // Event Listeners iOS Compatible
+  document.addEventListener("DOMContentLoaded", function() {
+    const inputs = ['cap-input', 'soc-curr', 'soc-target', 'loss-input', 'volt-select', 'phase-select', 'price-input', 'time-start'];
+    inputs.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', calculate);
+        el.addEventListener('change', calculate);
+      }
+    });
+
+    document.querySelectorAll('.amp-btn[data-amp]').forEach(btn => {
+      btn.addEventListener('click', function() {
+        setAmp(parseInt(this.getAttribute('data-amp'), 10));
+      });
+    });
+
+    document.getElementById('tab-calc-btn').addEventListener('click', () => switchTab('calc'));
+    document.getElementById('tab-cal-btn').addEventListener('click', () => switchTab('cal'));
+    document.getElementById('btn-save-today').addEventListener('click', saveChargeToCalendar);
+
+    document.getElementById('btn-prev-m').addEventListener('click', () => {
+      viewDate.setMonth(viewDate.getMonth() - 1);
+      renderCalendar();
+    });
+    document.getElementById('btn-next-m').addEventListener('click', () => {
+      viewDate.setMonth(viewDate.getMonth() + 1);
+      renderCalendar();
+    });
+
+    calculate();
+  });
+</script>
+</body>
+</html>
